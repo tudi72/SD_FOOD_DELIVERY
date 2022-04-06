@@ -37,4 +37,27 @@ public class Restaurant {
                 joinColumns         =   {@JoinColumn(name = "restaurant_id")},
                 inverseJoinColumns  =   {@JoinColumn(name = "neighbourhood_id")})
     Set<Neighbourhood> neighbourhoodList;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable( name = "restaurant_meals",
+                joinColumns = {@JoinColumn(name = "restaurant_id")},
+                inverseJoinColumns = {@JoinColumn(name = "meal_id")}
+    )
+    Set<Meal> meals;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 }

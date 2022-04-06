@@ -1,12 +1,12 @@
 package com.example.demo.Service;
 
 import com.example.demo.Model.DTOs.RestaurantDTO;
-import com.example.demo.Model.Restaurant;
 import com.example.demo.Repository.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RestaurantService {
@@ -18,9 +18,11 @@ public class RestaurantService {
     }
 
 
-    public List<Restaurant> getAllRestaurants() {
-        List<Restaurant> list =  restaurantRepository.getAll();
-        return list;
+    public List<RestaurantDTO> getAllRestaurants() {
+        return restaurantRepository.getAll()
+                .stream()
+                .map(x -> new RestaurantDTO.Builder(x).build())
+                .collect(Collectors.toList());
     }
 
 }

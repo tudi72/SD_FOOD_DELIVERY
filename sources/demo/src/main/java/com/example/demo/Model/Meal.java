@@ -1,17 +1,21 @@
 package com.example.demo.Model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Data
-@Builder
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
+@Builder
+@NamedNativeQuery(name = "Meal.getMealsByRestaurantId",
+        query ="select meal.* from meal " +
+        "join restaurant_meals " +
+        "where restaurant_id = ? and restaurant_meals.meal_id = meal.id", resultClass = Meal.class)
 public class Meal {
 
     @Id
@@ -28,7 +32,7 @@ public class Meal {
     private String allergens;
 
     @Column
-    public double weight;
+    private double weight;
 
     @Column
     private double price;
@@ -37,14 +41,6 @@ public class Meal {
     @JoinColumn(name = "category_id")
     private Category category;
 
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

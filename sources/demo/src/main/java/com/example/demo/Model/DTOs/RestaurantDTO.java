@@ -1,19 +1,34 @@
 package com.example.demo.Model.DTOs;
 
-import com.example.demo.Model.Meal;
-import com.example.demo.Model.Neighbourhood;
+import com.example.demo.Model.Restaurant;
+import lombok.*;
 
-import java.util.List;
-import java.util.Set;
-
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class RestaurantDTO {
 
     public String name;
 
     public String location;
 
-    public List<Meal> meals;
+    private RestaurantDTO(Builder builder) {
+        this.name = builder.name;
+        this.location = builder.location;
+    }
 
-    public Set<Neighbourhood> neighbourhoods;
-    
+    public static class Builder{
+
+        private final String name;
+        private final String location;
+
+        public Builder(Restaurant restaurant){
+            this.name = restaurant.getName();
+            this.location = restaurant.getLocation();
+        }
+        public RestaurantDTO build(){
+            return new RestaurantDTO(this);
+        }
+    }
 }
