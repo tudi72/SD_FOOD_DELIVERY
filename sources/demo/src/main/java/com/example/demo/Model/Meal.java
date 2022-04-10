@@ -37,6 +37,9 @@ public class Meal {
     @Column
     private double price;
 
+    @Column
+    private String imageURL;
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
@@ -86,7 +89,11 @@ public class Meal {
         return category.getCategory();
     }
 
-   public void setCategory(String category){
-        this.category.setCategory(category);
+   public void setCategory(Category category){
+        this.category = (category);
    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
 }

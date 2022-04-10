@@ -29,7 +29,7 @@ public class Restaurant {
 
     @JsonBackReference
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "admin_id", nullable = false)
+    @JoinColumn(name = "admin_id")
     private Admin admin;
 
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
@@ -45,6 +45,8 @@ public class Restaurant {
     )
     Set<Meal> meals;
 
+    public int getId(){ return id;}
+
     public String getName() {
         return name;
     }
@@ -57,7 +59,23 @@ public class Restaurant {
         return location;
     }
 
+    public int getAdminId() {
+        return admin.getId();
+    }
+
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
+    }
+
+    public void setNeighbourhoodList(Set<Neighbourhood> neighbourhoodList) {
+        this.neighbourhoodList = neighbourhoodList;
+    }
+
+    public void setMeals(Set<Meal> meals) {
+        this.meals = meals;
     }
 }

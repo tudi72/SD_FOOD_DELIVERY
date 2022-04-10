@@ -30,4 +30,11 @@ public class Admin {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "admin")
     private Restaurant restaurant;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setRestaurant(Restaurant restaurant){
+        this.restaurant = restaurant;
+    }
 }

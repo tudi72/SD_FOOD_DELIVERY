@@ -18,8 +18,7 @@ public class UserService {
     }
 
     public User addUser(User user) {
-        User destination = repository.saveAndFlush(user);
-        return destination;
+        return repository.saveAndFlush(user);
     }
 
     public List<User> getAllUsers() {

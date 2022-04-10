@@ -1,6 +1,9 @@
 package com.example.demo.Service;
 
+import com.example.demo.Model.Category;
 import com.example.demo.Model.DTOs.MealDTO;
+import com.example.demo.Model.Meal;
+import com.example.demo.Repository.CategoryRepository;
 import com.example.demo.Repository.MealRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,13 +14,14 @@ import java.util.stream.Collectors;
 @Service
 public class MealService {
     private final MealRepository mealRepository;
-
+    private final CategoryRepository categoryRepository;
     @Autowired
-    MealService(MealRepository mealRepository){
+    MealService(MealRepository mealRepository, CategoryRepository categoryRepository)
+    {
+        this.categoryRepository = categoryRepository;
         this.mealRepository = mealRepository;
     }
 
-    // TODO : get all meals based on restaurant id
     public List<MealDTO> getMeals(int id){
 
                 return mealRepository
@@ -26,5 +30,33 @@ public class MealService {
                 .map(x -> new MealDTO.Builder(x).build())
                 .collect(Collectors.toList());
 
+    }
+
+    public Meal registerMeal(MealDTO mealDTO) {
+        Category category = categoryRepository.getById(mealDTO.category);
+        Meal meal = MealDTO.toMeal(mealDTO,category);
+        try{
+            return mealRepository.saveAndFlush(meal);
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<MealDTO> getMealsByCategory(String category) {
+        Category category_obj = categoryRepository.getById(category);
+        try{
+            return mealRepository
+                    .getMealsByCategory(category_obj)
+                    .stream()
+                    .map(x -> new MealDTO.Builder(x).build())
+                    .collect(Collectors.toList());
+
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
     }
 }
