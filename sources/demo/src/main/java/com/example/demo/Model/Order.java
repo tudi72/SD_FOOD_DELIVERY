@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@NamedNativeQuery(name = "Order.selectTimestamp",query = "SELECT date_and_time FROM order",resultClass = Time.class)
 public class Order {
 
     @Id
