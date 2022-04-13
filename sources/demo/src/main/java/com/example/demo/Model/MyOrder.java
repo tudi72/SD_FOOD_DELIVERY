@@ -34,4 +34,7 @@ public class MyOrder {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

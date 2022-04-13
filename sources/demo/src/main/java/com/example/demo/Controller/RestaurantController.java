@@ -9,7 +9,9 @@ import com.example.demo.Service.MealService;
 import com.example.demo.Service.OrderService;
 import com.example.demo.Service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,10 +38,10 @@ public class RestaurantController {
         return restaurantService.registerRestaurant(restaurant);
     }
 
-    @PostMapping(value ="/new_meal",consumes ={"application/json"})
+    @PostMapping(value ="/new_meal/{category}",consumes ={"application/json"})
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Meal registerMeal(@RequestBody MealDTO mealDTO){
-        return mealService.registerMeal(mealDTO);
+    public Meal registerMeal(@PathVariable("category")String category,@RequestBody MealDTO mealDTO){
+        return mealService.registerMeal(category,mealDTO);
     }
 
     @GetMapping(value = "/view_category_menu/{category_id}",consumes = {"application/json"})
@@ -56,4 +58,23 @@ public class RestaurantController {
     public List<MyOrder> viewOrderByStatus(@PathVariable("status")String status){
         return orderService.getOrdersByStatus(status);
     }
+
+    @PutMapping(value = "view_orders/accept/{order_id}",consumes = {"application/json"})
+    public ResponseEntity<MyOrder> acceptOrder(@PathVariable("order_id")int order_id)
+    throws ResourceNotFoundException {
+        return orderService.acceptOrder(order_id);
+    }
+
+    @PutMapping(value = "view_orders/decline/{order_id}",consumes = {"application/json"})
+    public ResponseEntity<MyOrder> declineOrder(@PathVariable("order_id")int order_id) throws
+            ResourceNotFoundException{
+        return orderService.declineOrder(order_id);
+    }
+
+    @PutMapping(value = "view_orders/change_status/{order_id}/{new_status}",consumes = {"application/json"})
+    public ResponseEntity<MyOrder> updateOrderStatus(@PathVariable("order_id")int order_id,
+                                                     @PathVariable("new_status")String status) throws ResourceNotFoundException{
+        return orderService.updateOrderStatus(order_id,status);
+    }
+
 }

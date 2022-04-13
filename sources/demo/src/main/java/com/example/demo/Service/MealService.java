@@ -32,9 +32,9 @@ public class MealService {
 
     }
 
-    public Meal registerMeal(MealDTO mealDTO) {
-        Category category = categoryRepository.getById(mealDTO.category);
-        Meal meal = MealDTO.toMeal(mealDTO,category);
+    public Meal registerMeal(String category,MealDTO mealDTO) {
+        Category categoryObj = categoryRepository.getById(category);
+        Meal meal = MealDTO.toMeal(mealDTO,categoryObj);
         try{
             return mealRepository.saveAndFlush(meal);
         }
