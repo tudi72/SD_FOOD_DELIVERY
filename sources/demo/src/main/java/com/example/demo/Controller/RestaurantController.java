@@ -3,7 +3,7 @@ package com.example.demo.Controller;
 import com.example.demo.Model.DTOs.MealDTO;
 import com.example.demo.Model.DTOs.RestaurantDTO;
 import com.example.demo.Model.Meal;
-import com.example.demo.Model.Order;
+import com.example.demo.Model.MyOrder;
 import com.example.demo.Model.Restaurant;
 import com.example.demo.Service.MealService;
 import com.example.demo.Service.OrderService;
@@ -48,7 +48,12 @@ public class RestaurantController {
     }
 
     @GetMapping(value = "/view_orders")
-    public List<Order> viewOrders(){
+    public List<MyOrder> viewOrders(){
         return orderService.getOrders();
+    }
+
+    @GetMapping(value = "/view_orders/{status}",consumes= {"application/json"})
+    public List<MyOrder> viewOrderByStatus(@PathVariable("status")String status){
+        return orderService.getOrdersByStatus(status);
     }
 }

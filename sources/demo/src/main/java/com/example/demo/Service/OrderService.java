@@ -1,6 +1,6 @@
 package com.example.demo.Service;
 
-import com.example.demo.Model.Order;
+import com.example.demo.Model.MyOrder;
 import com.example.demo.Repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,14 +17,24 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
-
-    public List<Order> getOrders() {
+    public List<MyOrder> getOrders() {
         try{
-//            return orderRepository.selectTimestamp();
-            return null;
+            return orderRepository.findAll();
         }
         catch (Exception ex){
             return null;
         }
     }
+
+    public List<MyOrder> getOrdersByStatus(String status) {
+        try{
+            return orderRepository.findByStatus(status);
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+
 }

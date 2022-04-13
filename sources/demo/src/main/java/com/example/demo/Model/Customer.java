@@ -1,5 +1,6 @@
 package com.example.demo.Model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,8 +31,9 @@ public class Customer {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "customer")
-    private List<Order> orderList;
+    private List<MyOrder> orderList;
 
 
 }
