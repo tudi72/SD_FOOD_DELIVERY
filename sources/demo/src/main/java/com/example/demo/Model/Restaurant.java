@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -44,6 +45,11 @@ public class Restaurant {
                 inverseJoinColumns = {@JoinColumn(name = "meal_id")}
     )
     Set<Meal> meals;
+
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "restaurant",fetch = FetchType.LAZY)
+    private List<Basket> basketList;
 
     public int getId(){ return id;}
 

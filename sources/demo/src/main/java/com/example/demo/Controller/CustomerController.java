@@ -1,14 +1,19 @@
 package com.example.demo.Controller;
 
 
+import com.example.demo.Model.Basket;
+import com.example.demo.Model.DTOs.MealCopyDTO;
 import com.example.demo.Model.DTOs.MealDTO;
+import com.example.demo.Model.DTOs.MyOrderDTO;
 import com.example.demo.Model.DTOs.RestaurantDTO;
-import com.example.demo.Model.Restaurant;
+import com.example.demo.Model.MealCopy;
+import com.example.demo.Model.MyOrder;
 import com.example.demo.Model.User;
 import com.example.demo.Service.MealService;
 import com.example.demo.Service.RestaurantService;
 import com.example.demo.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,10 +53,26 @@ public class CustomerController {
         return restaurantService.getAllRestaurants();
     }
 
-    @GetMapping(value = "/restaurants/{menu_id}", consumes = {"application/json"})
-    public List<MealDTO> getMeals(@PathVariable("menu_id") int id){
+    @GetMapping(value = "/restaurants/{restaurant_id}", consumes = {"application/json"})
+    public List<MealDTO> getRestaurantMenu(@PathVariable("restaurant_id") int id){
         return mealService.getMeals(id);
     }
 
+    @PostMapping(value = "/restaurants/{restaurant_id}/create_basket",consumes = {"application/json"})
+    public Basket registerBasket(@PathVariable("restaurant_id")int restaurant_id)
+    throws ResourceNotFoundException {
+      return  restaurantService.registerBasket(restaurant_id);
+    }
 
+    @PostMapping(value = "/restaurants/add_meal",consumes = {"application/json"})
+    public MealCopy addMealToBasket(@RequestBody MealCopyDTO mealCopyDTO)
+    {
+        return mealService.addMealToBasket(mealCopyDTO);
+    }
+
+    //TODO implement placing an order based on a list of meals and a basket for a specific restaurant
+    @PostMapping(value = "restaurants/place_order",consumes = {"application/json"})
+    public MyOrder registerOrder(@RequestBody MyOrderDTO myOrderDTO){
+        return null;
+    }
 }

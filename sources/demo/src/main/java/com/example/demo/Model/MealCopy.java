@@ -1,5 +1,6 @@
 package com.example.demo.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +16,7 @@ import javax.persistence.*;
 public class MealCopy {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @Column
@@ -25,4 +26,20 @@ public class MealCopy {
     @JoinColumn(name = "meal_id")
     private Meal meal;
 
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "basket_id")
+    private Basket basket;
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setMeal(Meal meal) {
+        this.meal = meal;
+    }
+
+    public void setBasket(Basket basket) {
+        this.basket = basket;
+    }
 }
