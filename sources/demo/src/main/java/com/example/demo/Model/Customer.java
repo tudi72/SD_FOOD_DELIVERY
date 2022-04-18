@@ -1,5 +1,6 @@
 package com.example.demo.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
@@ -36,4 +37,43 @@ public class Customer {
     private List<MyOrder> orderList;
 
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<MyOrder> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<MyOrder> orderList) {
+        this.orderList = orderList;
+    }
 }

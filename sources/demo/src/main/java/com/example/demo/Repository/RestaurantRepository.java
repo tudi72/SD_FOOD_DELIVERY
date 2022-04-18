@@ -17,4 +17,6 @@ public interface RestaurantRepository extends JpaRepository<Restaurant,Integer> 
     @Transactional
     @Query(value = "SELECT * from restaurant", nativeQuery = true)
     public List<Restaurant> getAll();
+
+    public List<Restaurant> getAllByName(String name);
 }

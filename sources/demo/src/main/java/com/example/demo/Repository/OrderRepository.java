@@ -1,5 +1,6 @@
 package com.example.demo.Repository;
 
+import com.example.demo.Model.Customer;
 import com.example.demo.Model.MyOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -10,4 +11,8 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<MyOrder,Integer> {
 
     List<MyOrder> findByStatus(String status);
+
+    List<MyOrder> findByCustomer(Customer customer);
+
+    MyOrder findTopByCustomer(int customer_id);
 }

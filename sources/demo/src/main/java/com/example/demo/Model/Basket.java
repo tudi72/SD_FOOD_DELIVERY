@@ -33,4 +33,16 @@ public class Basket {
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public List<MealCopy> getMeals() {
+        return meals;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
 }

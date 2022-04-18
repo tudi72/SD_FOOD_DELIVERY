@@ -2,6 +2,7 @@ package com.example.demo.Service;
 
 import com.example.demo.Model.Admin;
 import com.example.demo.Model.Basket;
+import com.example.demo.Model.DTOs.PublicRestaurantDTO;
 import com.example.demo.Model.DTOs.RestaurantDTO;
 import com.example.demo.Model.Restaurant;
 import com.example.demo.Repository.AdminRepository;
@@ -29,10 +30,10 @@ public class RestaurantService {
     }
 
 
-    public List<RestaurantDTO> getAllRestaurants() {
+    public List<PublicRestaurantDTO> getAllRestaurants() {
         return restaurantRepository.getAll()
                 .stream()
-                .map(x -> new RestaurantDTO.Builder(x).build())
+                .map(x -> new PublicRestaurantDTO.Builder(x).build())
                 .collect(Collectors.toList());
     }
 
@@ -58,5 +59,12 @@ public class RestaurantService {
         basket.setRestaurant(restaurant);
 
         return basketRepository.save(basket);
+    }
+
+    public List<RestaurantDTO> getAllRestaurantsByName(String name) {
+        return restaurantRepository.getAllByName(name)
+                .stream()
+                .map(x -> new RestaurantDTO.Builder(x).build())
+                .collect(Collectors.toList());
     }
 }
