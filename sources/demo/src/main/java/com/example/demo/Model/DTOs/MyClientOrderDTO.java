@@ -10,6 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 public class MyClientOrderDTO {
 
+    int order_id;
     String status;
     String dateAndTime;
     String deliveryTime;
@@ -18,14 +19,17 @@ public class MyClientOrderDTO {
         this.status = builder.status;
         this.dateAndTime = builder.dateAndTime;
         this.deliveryTime = builder.deliveryTime;
+        this.order_id = builder.order_id;
     }
 
     public static class Builder{
         private final String status;
         private final String dateAndTime;
         private final String deliveryTime;
+        private final int order_id;
 
         public Builder(MyOrder order){
+            this.order_id = order.getId();
             this.status = order.getStatus();
             this.dateAndTime = order.getDateAndTime().toString();
             this.deliveryTime = String.valueOf(order.getDeliveryTime());

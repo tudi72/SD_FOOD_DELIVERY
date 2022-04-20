@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MealDTO {
+    public int meal_id;
     public String name;
     public String ingredients;
     public String allergens;
@@ -28,6 +29,7 @@ public class MealDTO {
         this.price = builder.price;
         this.category = builder.category;
         this.imageURL = builder.imageURL;
+        this.meal_id = builder.meal_id;
     }
 
     public static Meal toMeal(MealDTO mealDTO, Category category) {
@@ -50,8 +52,10 @@ public class MealDTO {
         private double weight;
         private double price;
         private String category;
+        private final int meal_id;
 
         public Builder(Meal meal){
+            this.meal_id = meal.getId();
             this.name = meal.getName();
             this.ingredients = meal.getIngredients();
             this.allergens = meal.getAllergens();

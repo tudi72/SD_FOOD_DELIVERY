@@ -1,8 +1,12 @@
 package com.example.demo.Model.DTOs;
 
 import com.example.demo.Model.Admin;
+import com.example.demo.Model.Neighbourhood;
 import com.example.demo.Model.Restaurant;
 import lombok.*;
+
+import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -17,6 +21,7 @@ public class RestaurantDTO {
     public String location;
 
     public int admin_id;
+
 
     private RestaurantDTO(Builder builder) {
         this.id = builder.id;

@@ -79,6 +79,9 @@ public class OrderService {
     }
 
     public MyOrder registerOrder(MyOrderDTO myOrderDTO) throws ResourceNotFoundException{
+
+
+        // create order
         MyOrder order = new MyOrder();
         order.setStatus("PENDING");
         order.setDateAndTime(Timestamp.from(Instant.now()));
@@ -92,6 +95,11 @@ public class OrderService {
 
         Customer customer = customerRepository.findById(myOrderDTO.customer_id)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found for id " + myOrderDTO.customer_id));
+
+        customer.setAddress(myOrderDTO.address);
+        customer.setPhone(myOrderDTO.phone);
+        customerRepository.save(customer);
+
         order.setBasket(basket);
         order.setCustomer(customer);
 

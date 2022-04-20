@@ -96,4 +96,8 @@ public class Meal {
     public String getImageURL() {
         return imageURL;
     }
+
+    public int getId() {
+        return id;
+    }
 }

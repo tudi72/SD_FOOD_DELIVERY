@@ -79,4 +79,8 @@ public class MyOrder {
     public Customer getCustomer() {
         return customer;
     }
+
+    public int getId() {
+        return id;
+    }
 }

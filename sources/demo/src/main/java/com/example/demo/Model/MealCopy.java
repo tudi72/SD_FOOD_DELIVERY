@@ -42,4 +42,8 @@ public class MealCopy {
     public void setBasket(Basket basket) {
         this.basket = basket;
     }
+
+    public int getQuantity() {
+        return quantity;
+    }
 }

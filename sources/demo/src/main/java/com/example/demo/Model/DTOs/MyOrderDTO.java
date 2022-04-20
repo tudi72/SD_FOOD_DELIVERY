@@ -13,6 +13,9 @@ import java.sql.Time;
 @NoArgsConstructor
 public class MyOrderDTO {
 
+    public String address;
+
+    public String phone;
 
     public String deliveryTime;
 
@@ -30,11 +33,23 @@ public class MyOrderDTO {
         private final String deliveryTime;
         private final int basket_id;
         private final int customer_id;
+        private String address;
+        private String  phone;
 
         public Builder(MyOrder order){
             this.deliveryTime = String.valueOf(order.getDeliveryTime());
             this.basket_id = order.getBasket().getId();
             this.customer_id = order.getCustomer().getId();
+        }
+
+        public Builder phone(String phone){
+            this.phone = phone;
+            return this;
+        }
+
+        public Builder address(String address){
+            this.address = address;
+            return this;
         }
 
         public MyOrderDTO build() { return new MyOrderDTO(this);}

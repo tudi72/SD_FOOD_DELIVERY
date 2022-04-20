@@ -84,4 +84,28 @@ public class Restaurant {
     public void setMeals(Set<Meal> meals) {
         this.meals = meals;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Admin getAdmin() {
+        return admin;
+    }
+
+    public Set<Neighbourhood> getNeighbourhoodList() {
+        return neighbourhoodList;
+    }
+
+    public Set<Meal> getMeals() {
+        return meals;
+    }
+
+    public List<Basket> getBasketList() {
+        return basketList;
+    }
+
+    public void setBasketList(List<Basket> basketList) {
+        this.basketList = basketList;
+    }
 }

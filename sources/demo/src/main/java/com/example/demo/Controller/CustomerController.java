@@ -24,6 +24,7 @@ public class CustomerController {
     private final RestaurantService restaurantService;
     private final MealService mealService;
     private final OrderService orderService;
+    private ResponseEntity<Customer> customer = null;
 
     @Autowired
     public CustomerController(OrderService orderService,MealService mealService, UserService userService, RestaurantService restaurantService){
@@ -36,9 +37,15 @@ public class CustomerController {
     @PostMapping(value = "/register",consumes ={"application/json"})
     @ResponseStatus(code = HttpStatus.CREATED)
     public ResponseEntity<Customer> registerUser(@RequestBody User user){
-        return  userService.addUser(user);
+        customer = userService.addUser(user);
+        return customer;
     }
 
+    @PostMapping(value = "/login",consumes = {"application/json"})
+    public ResponseEntity<Customer> loginUser(@RequestBody User user){
+        customer = userService.loginUser(user);
+        return customer;
+    }
 
     @GetMapping(value = "/findall")
     public List<User> getAllUsers(){
@@ -51,9 +58,10 @@ public class CustomerController {
         return restaurantService.getAllRestaurants();
     }
 
-    @GetMapping(value = "/restaurants/find_by_name/{restaurant_name}")
-    public List<RestaurantDTO> getRestaurantsByName(@PathVariable("restaurant_name")String name) throws ResourceNotFoundException{
-       return restaurantService.getAllRestaurantsByName(name);
+    @PostMapping(value = "/restaurants/find_by_name",consumes = {"application/json"})
+    public List<RestaurantDTO> getRestaurantsByName(@RequestBody RestaurantDTO dto) throws ResourceNotFoundException{
+        System.out.println(dto.name);
+       return restaurantService.getAllRestaurantsByName(dto);
     }
 
     @GetMapping(value = "/restaurants/{restaurant_id}")
@@ -61,7 +69,7 @@ public class CustomerController {
         return mealService.getMeals(id);
     }
 
-    @PostMapping(value = "/restaurants/{restaurant_id}/create_basket",consumes = {"application/json"})
+    @PostMapping(value = "/restaurants/{restaurant_id}/create_basket")
     public Basket registerBasket(@PathVariable("restaurant_id")int restaurant_id)
     throws ResourceNotFoundException {
       return  restaurantService.registerBasket(restaurant_id);
@@ -75,16 +83,19 @@ public class CustomerController {
 
     @PostMapping(value = "/restaurants/place_order",consumes = {"application/json"})
     public MyOrder registerOrder(@RequestBody MyOrderDTO myOrderDTO) throws ResourceNotFoundException{
+        myOrderDTO.customer_id = customer == null ? 0 : customer.getBody().getId();
         return orderService.registerOrder(myOrderDTO);
     }
 
-    @GetMapping(value ="/my_orders/{client_id}/view_status")
-    public MyClientOrderDTO getLastOrder(@PathVariable("client_id")int client_id) throws ResourceNotFoundException{
+    @GetMapping(value ="/my_orders/view_status")
+    public MyClientOrderDTO getLastOrder() throws ResourceNotFoundException{
+        int client_id = customer == null ? 0 : customer.getBody().getId();
         return orderService.getLastOrder(client_id);
     }
 
-    @GetMapping(value = "/my_orders/{client_id}/view_all")
-    public List<MyClientOrderDTO> getClientOrders(@PathVariable("client_id") int client_id) throws ResourceNotFoundException{
+    @GetMapping(value = "/my_orders/view_all")
+    public List<MyClientOrderDTO> getClientOrders() throws ResourceNotFoundException{
+        int client_id = customer == null ? 0 : customer.getBody().getId();
         return orderService.getClientOrders(client_id);
     }
 

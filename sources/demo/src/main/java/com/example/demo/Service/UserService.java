@@ -1,5 +1,6 @@
 package com.example.demo.Service;
 
+import com.example.demo.Model.Admin;
 import com.example.demo.Model.Customer;
 import com.example.demo.Model.User;
 import com.example.demo.Repository.AdminRepository;
@@ -47,4 +48,22 @@ public class UserService {
     }
 
 
+    public ResponseEntity<Customer> loginUser(User user) {
+
+        User isUser = userRepository.findByEmail(user.getEmail());
+        if(isUser != null){
+            Customer isCustomer = customerRepository.findCustomerByUser(isUser);
+            return ResponseEntity.ok(isCustomer);
+        }
+        else return null;
+    }
+
+    public ResponseEntity<Admin> loginAdmin(User user) {
+        User isUser = userRepository.findByEmail(user.getEmail());
+        if(isUser != null){
+            Admin isAdmin = adminRepository.findAdminByUser(isUser);
+            return ResponseEntity.ok(isAdmin);
+        }
+        else return null;
+    }
 }

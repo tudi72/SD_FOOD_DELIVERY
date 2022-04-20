@@ -1,5 +1,7 @@
 package com.example.demo.Repository;
 
+import com.example.demo.Model.Admin;
+import com.example.demo.Model.Neighbourhood;
 import com.example.demo.Model.Restaurant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -16,7 +18,11 @@ public interface RestaurantRepository extends JpaRepository<Restaurant,Integer> 
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(value = "SELECT * from restaurant", nativeQuery = true)
-    public List<Restaurant> getAll();
+    List<Restaurant> getAll();
 
-    public List<Restaurant> getAllByName(String name);
+    List<Restaurant> getAllByName(String name);
+
+    Restaurant findRestaurantByAdmin(Admin admin);
+
 }
+
