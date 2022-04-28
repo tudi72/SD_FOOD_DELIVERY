@@ -44,6 +44,7 @@ public class CustomerController {
     @PostMapping(value = "/login",consumes = {"application/json"})
     public ResponseEntity<Customer> loginUser(@RequestBody User user){
         customer = userService.loginUser(user);
+
         return customer;
     }
 
@@ -59,9 +60,9 @@ public class CustomerController {
     }
 
     @PostMapping(value = "/restaurants/find_by_name",consumes = {"application/json"})
-    public List<RestaurantDTO> getRestaurantsByName(@RequestBody RestaurantDTO dto) throws ResourceNotFoundException{
-        System.out.println(dto.name);
-       return restaurantService.getAllRestaurantsByName(dto);
+    public List<RestaurantDTO> getRestaurantsByName(@RequestBody OneStringDTO name) throws ResourceNotFoundException{
+        System.out.println(name.getOneString());
+       return restaurantService.getAllRestaurantsByName(name.getOneString());
     }
 
     @GetMapping(value = "/restaurants/{restaurant_id}")
@@ -78,6 +79,7 @@ public class CustomerController {
     @PostMapping(value = "/restaurants/add_meal",consumes = {"application/json"})
     public MealCopy addMealToBasket(@RequestBody MealCopyDTO mealCopyDTO)
     {
+
         return mealService.addMealToBasket(mealCopyDTO);
     }
 

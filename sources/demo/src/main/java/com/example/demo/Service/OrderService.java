@@ -1,13 +1,12 @@
 package com.example.demo.Service;
 
-import com.example.demo.Model.Basket;
-import com.example.demo.Model.Customer;
+import com.example.demo.Model.*;
 import com.example.demo.Model.DTOs.MyClientOrderDTO;
 import com.example.demo.Model.DTOs.MyOrderDTO;
-import com.example.demo.Model.MyOrder;
 import com.example.demo.Repository.BasketRepository;
 import com.example.demo.Repository.CustomerRepository;
 import com.example.demo.Repository.OrderRepository;
+import com.example.demo.Repository.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,17 +26,27 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final CustomerRepository customerRepository;
     private final BasketRepository basketRepository;
+    private final RestaurantRepository restaurantRepository;
 
     @Autowired
-    OrderService(CustomerRepository customerRepository,BasketRepository basketRepository,OrderRepository orderRepository) {
+    OrderService(RestaurantRepository restaurantRepository,CustomerRepository customerRepository,BasketRepository basketRepository,OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
         this.basketRepository = basketRepository;
+        this.restaurantRepository = restaurantRepository;
     }
 
-    public List<MyOrder> getOrders() {
+
+    public List<MyOrder> getOrders(Admin myAdmin) {
         try {
-            return orderRepository.findAll();
+            Restaurant restaurant = restaurantRepository.findRestaurantByAdmin(myAdmin);
+            return basketRepository
+                    .findBasketsByRestaurant(restaurant)
+                    .stream()
+                    .map(x-> orderRepository.findMyOrdersByBasket(x))
+                    .collect(Collectors.toList())
+                    .stream().flatMap(Collection::stream)
+                    .collect(Collectors.toList());
         } catch (Exception ex) {
             return null;
         }
@@ -55,7 +65,9 @@ public class OrderService {
         MyOrder order = orderRepository.findById(order_id)
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found for id : " + order_id));
 
-        order.setStatus("ACCEPTED");
+        if(order.getStatus().matches("PENDING"))
+            order.setStatus("ACCEPTED");
+        else throw new ResourceNotFoundException("Invalid order status for : " + order_id);
         final MyOrder updatedOrder = orderRepository.save(order);
         return ResponseEntity.ok(updatedOrder);
     }
@@ -64,7 +76,9 @@ public class OrderService {
         MyOrder order = orderRepository.findById(order_id)
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found for id : " + order_id));
 
-        order.setStatus("DECLINED");
+        if(order.getStatus().matches("PENDING"))
+            order.setStatus("DECLINED");
+        else throw new ResourceNotFoundException("Invalid order status for : " + order_id);
         final MyOrder updatedOrder = orderRepository.save(order);
         return ResponseEntity.ok(updatedOrder);
     }

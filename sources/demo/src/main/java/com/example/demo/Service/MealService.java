@@ -31,12 +31,25 @@ public class MealService {
     }
 
     public List<MealDTO> getMeals(int id){
-
-                return mealRepository
+        return mealRepository
                 .getMealsByRestaurantId(id)
                 .stream()
                 .map(x -> new MealDTO.Builder(x).build())
                 .collect(Collectors.toList());
+    }
+    public List<MealDTO> getMeals(Admin admin){
+            try{
+                Restaurant restaurant = restaurantRepository.findRestaurantByAdmin(admin);
+                return mealRepository
+                        .getMealsByRestaurantId(restaurant.getId())
+                        .stream()
+                        .map(x -> new MealDTO.Builder(x).build())
+                        .collect(Collectors.toList());
+
+            }
+            catch (Exception ex){
+                return null;
+            }
 
     }
 

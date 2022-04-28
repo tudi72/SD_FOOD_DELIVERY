@@ -67,8 +67,8 @@ public class RestaurantService {
         return basketRepository.save(basket);
     }
 
-    public List<RestaurantDTO> getAllRestaurantsByName(RestaurantDTO dto) {
-        return restaurantRepository.getAllByName(dto.name)
+    public List<RestaurantDTO> getAllRestaurantsByName(String name) {
+        return restaurantRepository.getAllByName(name)
                 .stream()
                 .map(x -> new RestaurantDTO.Builder(x).build())
                 .collect(Collectors.toList());

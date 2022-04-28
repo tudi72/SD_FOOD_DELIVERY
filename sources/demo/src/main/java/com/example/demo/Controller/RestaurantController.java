@@ -51,6 +51,12 @@ public class RestaurantController {
         return restaurantService.getAllCategories();
     }
 
+    @GetMapping(value ="/get_meals")
+    public List<MealDTO> getMeals(){
+        Admin admin = this.admin == null ? null: this.admin.getBody();
+        return mealService.getMeals(admin);
+    }
+
     @PostMapping(value = "/new_restaurant",consumes={"application/json"})
     public Restaurant registerRestaurant(@RequestBody RestaurantDTO restaurant) throws ResourceNotFoundException{
         restaurant.admin_id = this.admin == null ? 0: this.admin.getBody().getId();
@@ -72,14 +78,15 @@ public class RestaurantController {
         return mealService.registerMeal(mealDTO,myAdmin);
     }
 
-    @GetMapping(value = "/view_category_menu/{category_id}",consumes = {"application/json"})
+    @GetMapping(value = "/view_category_menu/{category_id}")
     public List<MealDTO> viewMealsByCategory(@PathVariable("category_id") String category){
         return mealService.getMealsByCategory(category);
     }
 
     @GetMapping(value = "/view_orders")
     public List<MyOrder> viewOrders(){
-        return orderService.getOrders();
+        Admin myAdmin = this.admin == null ? null : this.admin.getBody();
+        return orderService.getOrders(myAdmin);
     }
 
     @GetMapping(value = "/view_orders/{status}",consumes= {"application/json"})
@@ -87,21 +94,23 @@ public class RestaurantController {
         return orderService.getOrdersByStatus(status);
     }
 
-    @PutMapping(value = "view_orders/accept/{order_id}",consumes = {"application/json"})
+    @PostMapping(value = "view_orders/accept/{order_id}")
     public ResponseEntity<MyOrder> acceptOrder(@PathVariable("order_id")int order_id)
     throws ResourceNotFoundException {
         return orderService.acceptOrder(order_id);
     }
 
-    @PutMapping(value = "view_orders/decline/{order_id}",consumes = {"application/json"})
+    @PostMapping(value = "view_orders/decline/{order_id}")
     public ResponseEntity<MyOrder> declineOrder(@PathVariable("order_id")int order_id) throws
             ResourceNotFoundException{
         return orderService.declineOrder(order_id);
     }
 
-    @PutMapping(value = "view_orders/change_status/{order_id}/{new_status}",consumes = {"application/json"})
+    @PostMapping(value = "view_orders/change_status/{order_id}/{new_status}")
     public ResponseEntity<MyOrder> updateOrderStatus(@PathVariable("order_id")int order_id,
                                                      @PathVariable("new_status")String status) throws ResourceNotFoundException{
+        System.out.print(order_id);
+        System.out.print(status);
         return orderService.updateOrderStatus(order_id,status);
     }
 
