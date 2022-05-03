@@ -1,5 +1,6 @@
-package com.example.demo.Security;
+package com.example.demo.Security.Config;
 
+import com.example.demo.Security.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,12 +14,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final MyUserDetails myUserDetails;
 
     @Autowired
-    public SecurityConfiguration(MyUserDetails myUserDetails) {
+    public SecurityConfig(MyUserDetails myUserDetails) {
         this.myUserDetails = myUserDetails;
     }
 

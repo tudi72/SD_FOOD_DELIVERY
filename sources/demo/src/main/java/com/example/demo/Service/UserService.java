@@ -32,12 +32,15 @@ public class UserService{
         log.info("UserService : saveUser to database");
         return userRepository.save(user);
     }
+
     public Authority saveAuthority(Authority authority){
         return authorityRepository.save(authority);
     }
-    public void addRoleToUser(String username,String roleCode){
+
+    public User addRoleToUser(String username,String roleCode){
         User user = userRepository.findByEmail(username);
         user.getAuthorities().add(authorityRepository.findAuthorityByRoleCode(roleCode));
+        return userRepository.save(user);
     }
 
     public User getUser(String email) {
