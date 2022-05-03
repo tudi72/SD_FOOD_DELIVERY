@@ -1,69 +1,50 @@
 package com.example.demo.Service;
 
-import com.example.demo.Model.Admin;
-import com.example.demo.Model.Customer;
+import com.example.demo.Model.Authority;
 import com.example.demo.Model.User;
 import com.example.demo.Repository.AdminRepository;
+import com.example.demo.Repository.AuthorityRepository;
 import com.example.demo.Repository.CustomerRepository;
 import com.example.demo.Repository.UserRepository;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserService{
 
     private final UserRepository userRepository;
-    private final CustomerRepository customerRepository;
-    private final AdminRepository adminRepository;
+    private final AuthorityRepository authorityRepository;
+    private final Logger log = Logger.getLogger(UserService.class);
+
 
     @Autowired
-    public UserService(CustomerRepository customerRepository,AdminRepository adminRepository,UserRepository repository){
+    public UserService(AuthorityRepository authorityRepository,
+                       UserRepository repository){
         this.userRepository = repository;
-        this.customerRepository = customerRepository;
-        this.adminRepository = adminRepository;
+        this.authorityRepository = authorityRepository;
     }
 
-    public ResponseEntity<Customer> addUser(User user) {
-        User alreadyUser = userRepository.findByEmail(user.getEmail());
-        if(alreadyUser == null){
-            if(user.getEmail().equals("") || user.getPassword().equals("") || user.getPassword().length() < 5)
-                return null;
-            else if (user.getEmail().matches("^(.+)@(.+)$")){
-                User newUser = userRepository.saveAndFlush(user);
-                Customer customer = new Customer();
-                customer.setUser(newUser);
-                final Customer finalCustomer =  customerRepository.saveAndFlush(customer);
-                return ResponseEntity.ok(finalCustomer);
-            }
-            else return null;
-        }
-        else return null;
+    public User saveUser(User user) {
+        log.info("UserService : saveUser to database");
+        return userRepository.save(user);
+    }
+    public Authority saveAuthority(Authority authority){
+        return authorityRepository.save(authority);
+    }
+    public void addRoleToUser(String username,String roleCode){
+        User user = userRepository.findByEmail(username);
+        user.getAuthorities().add(authorityRepository.findAuthorityByRoleCode(roleCode));
     }
 
-    public List<User> getAllUsers() {
+    public User getUser(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public List<User> getUsers() {
         return userRepository.findAll();
-    }
-
-
-    public ResponseEntity<Customer> loginUser(User user) {
-
-        User isUser = userRepository.findByEmail(user.getEmail());
-        if(isUser != null){
-            Customer isCustomer = customerRepository.findCustomerByUser(isUser);
-            return ResponseEntity.ok(isCustomer);
-        }
-        else return null;
-    }
-
-    public ResponseEntity<Admin> loginAdmin(User user) {
-        User isUser = userRepository.findByEmail(user.getEmail());
-        if(isUser != null){
-            Admin isAdmin = adminRepository.findAdminByUser(isUser);
-            return ResponseEntity.ok(isAdmin);
-        }
-        else return null;
     }
 }

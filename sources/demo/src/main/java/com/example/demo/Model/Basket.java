@@ -22,7 +22,7 @@ public class Basket {
     private int id;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "basket")
+    @OneToMany(mappedBy = "basket",fetch = FetchType.EAGER)
     private List<MealCopy> meals;
 
     @JsonBackReference
@@ -30,20 +30,4 @@ public class Basket {
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public List<MealCopy> getMeals() {
-        return meals;
-    }
-
-    public Restaurant getRestaurant() {
-        return restaurant;
-    }
 }

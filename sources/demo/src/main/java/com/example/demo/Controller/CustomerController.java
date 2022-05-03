@@ -3,10 +3,7 @@ package com.example.demo.Controller;
 
 import com.example.demo.Model.*;
 import com.example.demo.Model.DTOs.*;
-import com.example.demo.Service.MealService;
-import com.example.demo.Service.OrderService;
-import com.example.demo.Service.RestaurantService;
-import com.example.demo.Service.UserService;
+import com.example.demo.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -17,42 +14,25 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/customer")
-@CrossOrigin
+@CrossOrigin("*")
 public class CustomerController {
 
-    private final UserService userService;
     private final RestaurantService restaurantService;
     private final MealService mealService;
     private final OrderService orderService;
+    private final AdminService adminService;
     private ResponseEntity<Customer> customer = null;
 
     @Autowired
-    public CustomerController(OrderService orderService,MealService mealService, UserService userService, RestaurantService restaurantService){
-        this.userService = userService;
+    public CustomerController(AdminService adminService,
+                              OrderService orderService,
+                              MealService mealService,
+                              RestaurantService restaurantService) {
         this.restaurantService = restaurantService;
         this.mealService = mealService;
         this.orderService = orderService;
+        this.adminService = adminService;
     }
-
-    @PostMapping(value = "/register",consumes ={"application/json"})
-    @ResponseStatus(code = HttpStatus.CREATED)
-    public ResponseEntity<Customer> registerUser(@RequestBody User user){
-        customer = userService.addUser(user);
-        return customer;
-    }
-
-    @PostMapping(value = "/login",consumes = {"application/json"})
-    public ResponseEntity<Customer> loginUser(@RequestBody User user){
-        customer = userService.loginUser(user);
-
-        return customer;
-    }
-
-    @GetMapping(value = "/findall")
-    public List<User> getAllUsers(){
-        return userService.getAllUsers();
-    }
-
 
     @GetMapping(value = "/restaurants")
     public List<PublicRestaurantDTO> getRestaurants(){
@@ -99,6 +79,11 @@ public class CustomerController {
     public List<MyClientOrderDTO> getClientOrders() throws ResourceNotFoundException{
         int client_id = customer == null ? 0 : customer.getBody().getId();
         return orderService.getClientOrders(client_id);
+    }
+
+    @PostMapping(value = "/send_mail",consumes = {"application/json"})
+    public HttpStatus sendEmail(@RequestBody OneStringDTO dto){
+        return adminService.sendEmailToAdmin(customer,dto);
     }
 
 }

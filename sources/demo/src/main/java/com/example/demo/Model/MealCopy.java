@@ -1,16 +1,16 @@
 package com.example.demo.Model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Data
 @Builder
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class MealCopy {
@@ -31,19 +31,4 @@ public class MealCopy {
     @JoinColumn(name = "basket_id")
     private Basket basket;
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public void setMeal(Meal meal) {
-        this.meal = meal;
-    }
-
-    public void setBasket(Basket basket) {
-        this.basket = basket;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
 }

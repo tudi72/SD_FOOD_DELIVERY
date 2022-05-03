@@ -4,6 +4,11 @@ package com.example.demo.Model;
 import javax.persistence.*;
 
 import lombok.*;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 
 @Entity
 @Data
@@ -11,37 +16,43 @@ import lombok.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@RequiredArgsConstructor
 @ToString
 @Builder
-public class User {
+
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
+    @NonNull
     private int id;
+    @NonNull private  String name;
+    @NonNull private  String email;
+    @NonNull private  String password;
+    @Column private Date createdAt;
+    @Column private Date updatedAt;
+    @Column private boolean enabled;
 
-    @Column
-    private String name;
+    @NonNull
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name="user_auth",
+            joinColumns = @JoinColumn(referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(referencedColumnName = "id"))
+    private  Collection<Authority> authorities = new ArrayList<>();
 
-    @Column
-    private String email;
-
-    @Column
-    private String password;
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
+    @Override public String getUsername() {
         return email;
     }
-
-    public String getPassword() {
-        return password;
+    @Override public boolean isAccountNonExpired() {
+        return enabled;
     }
+    @Override public boolean isAccountNonLocked() {
+        return enabled;
+    }
+    @Override public boolean isCredentialsNonExpired() {
+        return enabled;
+    }
+
+
 }

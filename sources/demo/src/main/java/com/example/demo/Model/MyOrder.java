@@ -11,6 +11,8 @@ import java.util.List;
 @Entity
 @Data
 @Builder
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
@@ -40,47 +42,5 @@ public class MyOrder {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
-    public void setDateAndTime(Timestamp dateAndTime) {
-        this.dateAndTime = dateAndTime;
-    }
-
-    public void setDeliveryTime(Timestamp deliveryTime) {
-        this.deliveryTime = deliveryTime;
-    }
-
-    public void setBasket(Basket basket) {
-        this.basket = basket;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public Timestamp getDateAndTime() {
-        return dateAndTime;
-    }
-
-    public Timestamp getDeliveryTime() {
-        return deliveryTime;
-    }
-
-    public Basket getBasket() {
-        return basket;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public int getId() {
-        return id;
-    }
 }

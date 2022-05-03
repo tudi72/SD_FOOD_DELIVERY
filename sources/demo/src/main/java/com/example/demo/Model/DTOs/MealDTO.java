@@ -2,14 +2,13 @@ package com.example.demo.Model.DTOs;
 
 import com.example.demo.Model.Category;
 import com.example.demo.Model.Meal;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @Builder
 @AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
 public class MealDTO {
     public int meal_id;
@@ -61,7 +60,7 @@ public class MealDTO {
             this.allergens = meal.getAllergens();
             this.weight = meal.getWeight();
             this.price = meal.getPrice();
-            this.category = meal.getCategory();
+            this.category = meal.getCategory().getCategory();
             this.imageURL = meal.getImageURL();
         }
         public MealDTO build(){

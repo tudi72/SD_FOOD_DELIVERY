@@ -40,7 +40,7 @@ public class RestaurantDTO {
             this.id = restaurant.getId();
             this.name = restaurant.getName();
             this.location = restaurant.getLocation();
-            this.admin_id = restaurant.getAdminId();
+            this.admin_id = restaurant.getAdmin().getId();
         }
         public RestaurantDTO build(){
             return new RestaurantDTO(this);

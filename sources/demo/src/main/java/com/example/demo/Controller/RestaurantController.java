@@ -35,11 +35,6 @@ public class RestaurantController {
     }
 
 
-    @PostMapping(value = "/login",consumes = {"application/json"})
-    public ResponseEntity<Admin> loginUser(@RequestBody User user){
-        admin = userService.loginAdmin(user);
-        return admin;
-    }
 
     @GetMapping(value = "/get_neighbourhoods")
     public List<Neighbourhood> getNeighbourhoods(){
@@ -114,4 +109,9 @@ public class RestaurantController {
         return orderService.updateOrderStatus(order_id,status);
     }
 
+    @PostMapping(value = "get_PDF")
+    public HttpStatus exportMenuAsPDF(){
+        Admin admin = this.admin == null ? null: this.admin.getBody();
+        return restaurantService.exportMenuAsPDF(admin);
+    }
 }
